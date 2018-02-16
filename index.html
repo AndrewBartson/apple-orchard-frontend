@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Apple Orchard - M.A. Center, Castro Valley, California</title>
+  <script src="js/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="js/tree_map.js"></script>
+  <script src="ajax_handlers/axios.js"></script>
+  <script src="jsondata/trees.js"></script>
+  <script>
+
+  // array for info window
+  let infos = [];
+  let trees = trees_complete;
+
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/jquery-ui.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="container_">
+    <div id="side_bar_">
+      <div id="title_box">
+        <h1 class="tbox1">Apple Orchard</h1>
+        <h2 class="tbox2">M.A. Center</h2>
+        <h2 class="tbox3">Castro Valley CA</h2>
+        <h6 class="tbox4">Click a tree marker to view data</h6>
+      </div>
+      <div id="tabs">
+        <ul id="main_ul">
+          <li id="first_tab"><a href="#tabs-1">Add a Tree</a></li>
+          <li id="second_tab"><a href="#tabs-2">Edit a Tree</a></li>
+        </ul>
+        <div id="tabs-1">
+          <form id="form_add_tree" class="focus_border" action="#" method="post">
+            <p>Click location of new tree</p>
+            <div>
+              <label for="lat">Lat:</label>
+              <input type="number" name="lat" id="lat_add" value="" readonly tabindex="1">
+            </div>
+            <div>
+              <label for="long">Long:</label>
+              <input type="number" name="long" id="lng_add" value="" readonly tabindex="2">
+            </div>
+            <div>
+              <label for="species">Species:</label>
+
+              <select id="species_tab_add" name="species">
+                <option selected value="base">Select one:</option>
+                <option value="apple">Apple</option>
+                <option value="plum">Plum</option>
+                <!-- <option value="pear">Pear</option> -->
+                <option value="persimmon">Persimmon</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="variety">Variety:</label><br/>
+              <select id="variety_tab_add" name="variety">
+                <option>Select from above</option>
+              </select>
+            </div>
+            <div class="pad-left">
+              <label for="date_planted">Date planted:</label>
+              <input class="edit_box" type="date" name="date_planted" id="date_planted" value="" tabindex="3">
+            </div>
+            <div>
+              <label for="section">Section:</label>
+              <select name="section" id="section">
+                <option value="section1">1</option>
+                <option value="section2">2</option>
+                <option value="section3">3</option>
+              </select>
+
+              <label class="marg_left" for="row">Row:</label>
+              <select name="row" id="row">
+                <option value="row1">1</option>
+                <option value="row2">2</option>
+                <option value="row3">3</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="pad-left" for="textarea">Notes:</label>
+              <textarea cols="40" rows="4" name="textarea" id="textarea" tabindex="4"></textarea>
+            </div>
+            <button id="btn_add" class="ui-button tree_btn" tabindex="5">Save New Tree</button>
+          </form>
+        </div>
+        <div id="tabs-2">
+          <form id="form_edit_tree" class="focus_border" action="#" method="post">
+            <p>To edit, click a tree marker</p>
+            <div>
+              <label for="lat">Lat:</label>
+              <input type="number" name="lat" id="lat_edit" value="" readonly tabindex="6">
+            </div>
+            <div>
+              <label for="long">Long:</label>
+              <input type="number" name="long" id="lng_edit" value="" readonly tabindex="7">
+            </div>
+            <div>
+              <label for="species">Species:</label>
+              <select id="species_tab_edit" name="species">
+                <option selected value="base" >Select one:</option>
+                <option value="apple">Apple</option>
+                <option value="plum">Plum</option>
+                <!-- <option value="pear">Pear</option> -->
+                <option value="persimmon">Persimmon</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="variety">Variety:</label><br/>
+              <select id="variety_tab_edit" name="variety">
+                <option>Select from above</option>
+              </select>
+            </div>
+            <div class="pad-left">
+              <label for="date_planted">Date planted:</label>
+              <input class="edit_box" type="date" name="date_planted" id="date_planted" value="" tabindex="8">
+            </div>
+            <div>
+              <label for="section">Section:</label>
+              <select name="section" id="section">
+                <option value="section1">1</option>
+                <option value="section2">2</option>
+                <option value="section3">3</option>
+              </select>
+
+              <label class="marg_left" for="row">Row:</label>
+              <select name="row" id="row">
+                <option value="row1">1</option>
+                <option value="row2">2</option>
+                <option value="row3">3</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="pad-left" for="textarea">Notes:</label>
+              <textarea cols="40" rows="4" name="textarea" id="textarea" tabindex="9"></textarea>
+            </div>
+            <button id="btn_edit" class="ui-button tree_btn" tabindex="10">Save Changes</button>
+          </form>
+        </div>
+
+      </div>
+      <button id="show_editor" class="ui-button tree_btn" tabindex="11">Go to Data Editor</button>
+      <!-- <div id="footer">
+        <a href="http://andrewbartson.surge.sh" class="promo">Andrew Bartson<br/><p>Full Stack Web Developer</p></a>
+      </div> -->
+    </div>
+    <div id="map_"></div>
+    <div id="data_editor">
+      <div class='wrapper'>
+        <div class="crud_zone">
+          <div class="container">
+
+            <h3>Users</h3>
+
+            <div class="new_block">
+              <form id="form_user" action="" method="post">
+                <div>
+                  <label class="edit_label" for="next_usr_id">User ID:</label>
+                  <input class="edit_box" type="number" name="next_usr_id" id="next_usr_id"
+                  placeholder="Enter User Id" value="" tabindex="12">
+                </div>
+                <div>
+                  <label class="edit_label" for="search_id_btn"></label>
+                  <button type="button" action="" id="btn_usr_rd" class="search_id_btn" tabindex="13">Search by ID</button>
+                </div>
+                <div>
+                <div>
+                  <label class="edit_label" for="first_name">First Name:</label>
+                  <input class="edit_box" type="text" name="first_name" id="first_name" value="" tabindex="14">
+                </div>
+                <div>
+                  <label class="edit_label" for="last_name">Last Name:</label>
+                  <input class="edit_box" type="text" name="last_name" id="last_name" value="" tabindex="15">
+                </div>
+                  <label class="edit_label" for="email">Email:</label>
+                  <input class="edit_box" type="email" name="email" id="email" value="" tabindex="4">
+                </div>
+                <div>
+                  <label class="edit_label" for="phone">Phone:</label>
+                  <input class="edit_box" type="tel" name="phone" id="phone" value="" tabindex="3">
+                </div>
+
+                <div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <div id="message_user" class="status_message"></div>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_usr_upd" class="edit_btn" type="submit" value="update">Save Changes</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_usr_crt" class="edit_btn" type="submit" value="create">Create User</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_usr_del" class="edit_btn" type="button" value="delete">Delete User</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_usr_all" class="edit_btn" type="button" value="get_all">View All in Console</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+          <div class="btn_row">
+            <div class="edit_btn_row">
+              <button id="return_to_map" class="edit_btn" type="button">Return to Map</button>
+            </div>
+          </div>
+        </div>
+        <div class="crud_zone">
+          <div class="container">
+
+            <h3>Notes</h3>
+
+            <div class="new_block">
+              <form id="form_note" action="" method="post">
+                <div>
+                  <label class="edit_label" for="next_note_id">Note ID:</label>
+                  <input class="edit_box" type="number" name="next_note_id" id="next_note_id"
+                  placeholder="Enter Note Id" value="" tabindex="1">
+                </div>
+                <div>
+                  <label class="edit_label" for="input_id"></label>
+                  <button type="button" action="" id="btn_note_rd" class="search_id_btn" tabindex="2">Search by ID</button>
+                </div>
+                <div>
+                  <label class="edit_label" for="title">Title:</label>
+                  <input class="edit_box" type="text" name="title" id="title" value="" tabindex="3">
+                </div>
+                <div>
+                  <label for="content">Content:</label>
+                  <textarea class="margin_spec" cols="40" rows="4" name="content" id="content"></textarea>
+                </div>
+                <div>
+                  <label class="edit_label" for="author_id">Author ID:</label>
+                  <input class="edit_box" type="number" name="author_id" id="author_id" value="1" tabindex="4">
+                </div>
+                <div>
+                  <label class="edit_label" for="species_site_id">Tree ID:</label>
+                  <input class="edit_box" type="number" name="species_site_id" id="species_site_id" value="" placeholder="Optional" tabindex="5">
+                </div>
+                <div>
+                  <label class="edit_label" for="site_id">Site ID:</label>
+                  <input class="edit_box" type="number" name="site_id" id="site_id" value="" placeholder="Optional" tabindex="6">
+                </div>
+                <div>
+                  <label class="edit_label" for="species_id">Species:</label>
+                  <select class="margin_b" name="species_id" id="species_id">
+                    <option selected value="base">Optional</option>
+                    <option value="apple">Apple</option>
+                    <option value="plum">Plum</option>
+                    <!-- <option value="pear">Pear</option> -->
+                    <option value="persimmon">Persimmon</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="edit_label" for="variety_id">Variety:</label>
+                  <select class="margin_b" name="variety_id" id="variety_id">
+                    <option>Optional</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <div  id="message_note" class="status_message"></div>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_note_upd" class="edit_btn" type="submit" value="">Save Changes</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_note_crt" class="edit_btn" type="submit" value="">Create Note</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_note_del" class="edit_btn" type="button" value="">Delete Note</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_note_all" class="edit_btn" type="button" value="">View All in Console</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="crud_zone">
+          <div class="container">
+
+            <h3>Varieties</h3>
+
+            <div class="new_block">
+              <form id="form_var" action="" method="post">
+                <div>
+                  <label class="edit_label" for="next_variety_id">Variety ID:</label>
+                  <input class="edit_box" type="number" name="next_variety_id" id="next_variety_id"
+                  placeholder="Enter Variety Id" value="" tabindex="1">
+                </div>
+                <div>
+                  <label class="edit_label" for="input_id"></label>
+                  <button type="button" action="" id="btn_var_rd" class="search_id_btn">Search by ID</button>
+                </div>
+                <div>
+                  <label class="edit_label" for="variety_name">Name:</label>
+                  <input class="edit_box" type="text" name="variety_name" id="variety_name" value="" tabindex="2">
+                </div>
+              </div>
+              <div>
+                <label class="edit_label" for="species_id_var">Species:</label>
+                <select name="species_id_var" id="species_id_var">
+                  <option selected value="base">Select one:</option>
+                  <option value="1">Apple</option>
+                  <option value="2">Plum</option>
+                  <!-- <option value="pear">Pear</option> -->
+                  <option value="3">Persimmon</option>
+                  <option value="4">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <div class="btn_row">
+                  <div class="edit_btn_row">
+                    <div  id="message_var" class="status_message"></div>
+                  </div>
+                </div>
+                <div class="btn_row">
+                  <div class="edit_btn_row">
+                    <button id="btn_var_upd" class="edit_btn" type="submit" value="update">Save Changes</button>
+                  </div>
+                </div>
+                <div class="btn_row">
+                  <div class="edit_btn_row">
+                    <button id="btn_var_crt" class="edit_btn" type="submit" value="create">Create Variety</button>
+                  </div>
+                </div>
+                <div class="btn_row">
+                  <div class="edit_btn_row">
+                    <button id="btn_var_del" class="edit_btn" type="button" value="delete">Delete Variety</button>
+                  </div>
+                </div>
+                <div class="btn_row">
+                  <div class="edit_btn_row">
+                    <button id="btn_var_all" class="edit_btn" type="button" value="get_all">View All in Console</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="crud_zone">
+          <div class="container">
+
+            <h3>Sites</h3>
+
+            <div class="new_block">
+              <form id="form_site" action="" method="post">
+                <div>
+                  <label class="edit_label" for="next_site_id">Site ID:</label>
+                  <input class="edit_box" type="number" name="next_site_id" id="next_site_id"
+                  placeholder="Enter Site Id" value="" tabindex="1">
+                </div>
+                <div>
+                  <label class="edit_label" for="input_id"></label>
+                  <button type="button" action="" id="btn_site_rd" class="search_id_btn" tabindex="2">Search by ID</button>
+                </div>
+                <div>
+                  <label class="edit_label" for="lat">Latitude:</label>
+                  <input class="edit_box" type="number" step="0.0000001" name="lat" id="lat" value="" tabindex="3">
+                </div>
+                <div>
+                  <label class="edit_label" for="lng">Longitude:</label>
+                  <input class="edit_box" type="number" step="0.0000001" name="lng" id="lng" value="" tabindex="4">
+                </div>
+                <div>
+                  <label class="edit_label" for="quality">Site Quality:</label>
+                  <input class="edit_box" type="number" name="site_quality" id="site_quality" value="" tabindex="5">
+                </div>
+                <div>
+                  <label class="edit_label" for="slope">Slope:</label>
+                  <input class="edit_box" type="number" name="slope" id="slope" value="" tabindex="6">
+                </div>
+                <div>
+                  <label class="edit_label" for="aspect">Aspect:</label>
+                  <input class="edit_box" type="number" name="aspect" id="aspect" value="" tabindex="7">
+                </div>
+                <div>
+                  <label class="edit_label" for="soil_id">Soil ID:</label>
+                  <input class="edit_box" type="number" name="soil_id" id="soil_id" value="" tabindex="8">
+                </div>
+
+                <div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <div  id="message_site" class="status_message"></div>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_site_upd" class="edit_btn" type="submit" value="update" tabindex="9">Save Changes</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_site_crt" class="edit_btn" type="submit" value="create" tabindex="10">Create Site</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_site_del" class="edit_btn" type="button" value="delete" tabindex="11">Delete Site</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_site_all" class="edit_btn" type="button" value="get_all">View All in Console</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="crud_zone">
+          <div class="container">
+
+            <h3>Trees</h3>
+
+            <div class="new_block">
+              <form id="form_sp_s" action="" method="post">
+                <div>
+                  <label class="edit_label" for="next_sp_s_id">Tree ID:</label>
+                  <input class="edit_box" type="number" name="next_sp_s_id" id="next_sp_s_id"
+                  placeholder="Enter Tree Id" value="" tabindex="1">
+                </div>
+                <div>
+                  <label class="edit_label" for="input_id"></label>
+                  <button type="button" action="" id="btn_sp_s_rd" class="search_id_btn">Search by ID</button>
+                </div>
+
+                <div>
+                  <label class="edit_label" for="species_id_sp_s">Species:</label>
+                  <select class="margin_b" name="species_id_sp_s" id="species_id_sp_s">
+                    <option selected value="base">Select one:</option>
+                    <option value="apple">Apple</option>
+                    <option value="plum">Plum</option>
+                    <!-- <option value="pear">Pear</option> -->
+                    <option value="persimmon">Persimmon</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="edit_label" for="variety_id_sp_s">Variety:</label>
+                  <select class="margin_b" name="variety_id_sp_s" id="variety_id_sp_s">
+                    <option>Select from above</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="edit_label" for="sp_s_name">Name:</label>
+                  <input class="edit_box" type="text" name="sp_s_name" id="sp_s_name" value="" tabindex="2">
+                </div>
+                <div>
+                  <label class="edit_label" for="site_id_sp_s">Site ID:</label>
+                  <input class="edit_box" type="number" name="site_id_sp_s" id="site_id_sp_s" value="" tabindex="3">
+                </div>
+                <div>
+                  <label class="edit_label" for="date_planted">Date planted:</label>
+                  <input class="edit_box "type="date" name="date_planted" id="date_planted" value="" tabindex="4">
+                </div>
+                <div>
+                  <label class="edit_label" for="end_date">Date killed:</label>
+                  <input class="edit_box" type="date" name="end_date" id="end_date" value="" tabindex="4">
+                </div>
+                <div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <div  id="message_sp_s" class="status_message"></div>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_s_upd" class="edit_btn" type="submit" value="">Save Changes</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_s_crt" class="edit_btn" type="submit" value="">Create Tree</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_s_del" class="edit_btn" type="button" value="">Delete Tree</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_s_all" class="edit_btn" type="button" value="">View All in Console</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="crud_zone">
+          <div class="container">
+
+            <h3>Species</h3>
+
+            <div class="new_block">
+              <form id="form_sp" action="" method="post">
+                <div>
+                  <label class="edit_label" for="next_sp_id">Species ID:</label>
+                  <input class="edit_box" type="number" name="next_sp_id" id="next_sp_id"
+                  placeholder="Enter Species Id" value="" tabindex="1">
+                </div>
+                <div>
+                  <label class="edit_label" for="btn_sp_rd"></label>
+                  <button type="button" action="" id="btn_sp_rd" class="search_id_btn">Search by ID</button>
+                </div>
+                <div>
+                  <label class="edit_label" for="common_name">Common Name:</label>
+                  <input class="edit_box" type="text" name="common_name" id="common_name" value="" tabindex="2">
+                </div>
+                <div>
+                  <label class="edit_label" for="genus">Genus:</label>
+                  <input class="edit_box" type="text" name="genus" id="genus" value="" tabindex="3">
+                </div>
+                <div>
+                  <label class="edit_label" for="species_name">Species:</label>
+                  <input class="edit_box" type="text" name="species_name" id="species_name" value="" tabindex="4">
+                </div>
+
+                <div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <div  id="message_sp" class="status_message"></div>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_upd" class="edit_btn" type="submit" value="update">Save Changes</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_crt" class="edit_btn" type="submit" value="create">Create Species</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_del" class="edit_btn" type="button" value="delete">Delete Species</button>
+                    </div>
+                  </div>
+                  <div class="btn_row">
+                    <div class="edit_btn_row">
+                      <button id="btn_sp_all" class="edit_btn" type="button" value="get_all">View All in Console</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="event_handlers/sidebar.js"></script>
+
+  <script src="event_handlers/notes.js"></script>
+  <script src="event_handlers/sites.js"></script>
+  <script src="event_handlers/species_sites.js"></script>
+  <script src="event_handlers/species.js"></script>
+  <script src="event_handlers/users.js"></script>
+  <script src="event_handlers/varieties.js"></script>
+
+  <script src="ajax_handlers/notes.js"></script>
+  <script src="ajax_handlers/sites.js"></script>
+  <script src="ajax_handlers/species_sites.js"></script>
+  <script src="ajax_handlers/species.js"></script>
+  <script src="ajax_handlers/users.js"></script>
+  <script src="ajax_handlers/varieties.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd0ZZdBnJftinI-qHnPoP9kq5Mtkey6Ac&callback=initMap"
+async defer></script>
+</body>
+</html>

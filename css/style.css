@@ -1,0 +1,261 @@
+body {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+h1 {
+	font-size: 33px;
+	text-align: center;
+	margin: 0;
+}
+h2 {
+	font-size: 25px;
+	text-align: center;
+	margin: 0;
+}
+h3 {
+	font-size: 25px;
+  text-align: center;
+  margin: 0 0 15px 0;
+}
+h6 {
+	margin: 0;
+}
+#map_ {
+	height: 100%;
+	margin-left: 250px;
+	border: solid black 1px;
+	border-radius: 15px;
+}
+#data_editor {
+	display: none;
+}
+#side_bar_ {
+	width: 248px;
+	height: 100%;
+	float: left;
+	margin-right: 15px;
+	color: #0000b4;
+	display: grid;
+	justify-items: center;
+}
+#test_btn {
+	width: 140px;
+	align-items: center;
+	padding-right: 0;
+	padding-left: 0;
+}
+#container_ {
+	padding: 15px;
+	height: 100%;
+}
+#footer {
+	text-align: center;
+	display: grid;
+	grid-template-rows: auto;
+	line-height: 1.3;
+}
+#footer p {
+	font-size: 14px;
+	color: #333333;
+	margin-bottom: 0;
+}
+
+.promo {
+	font-size: 18px;
+	font-family: Tahoma;
+	color: #333333;
+}
+label {
+	text-align: right;
+	vertical-align: middle;
+	margin: 0;
+}
+.edit_label {
+	width: 120px;
+}
+.edit_box {
+	border: 1px solid rgb(160,160,160) !important;
+	border-radius: 3px;
+	margin-bottom: 5px;
+	padding-left: 3px;
+}
+.new_block {
+	display: block;
+	margin-bottom: 10px;
+}
+.margin_spec {
+		margin: 5px 0 10px 0;
+}
+input[type=text] {
+	border: 1px;
+}
+textarea {
+	margin-top: 10px;
+	padding-left: 3px;
+}
+#species_tab_add, #species_tab_edit {
+	margin-bottom: 0;
+	margin-top: 10px;
+}
+#variety_tab_add, #variety_tab_edit {
+	width: 160px;
+	text-align: center;
+	padding: 0;
+	align-items: top;
+	margin-top: 0;
+}
+.radio_stack {
+	display: block;
+}
+.radio_title {
+	margin-bottom: 0;
+	height: 37px;
+	margin-top: 10px;
+}
+textarea {
+	vertical-align: top;
+	width: 204px;
+}
+.ui-tabs, .ui-tab {
+	padding: 0;
+}
+#second_tab {
+	margin-right: 0;
+	margin-left: 3px;
+}
+#main_ul {
+	padding: 5px 0 0 7px;
+	background: white;
+	border-top: 0;
+	border-right: 0;
+	border-bottom: solid 1px #aaa;
+	border-right: 0;
+}
+#tabs {
+	width: 248px;
+	height: 596px;'
+}
+.tree_btn {
+	width: 201px;
+}
+#show_editor {
+	height: 33px;
+}
+#lat_edit, #lng_edit, #lng_add, #lat_add {
+	width: 100px;
+	border: 1px solid rgb(160, 160, 160);
+	border-radius: 3px;
+}
+#title_box {
+	height: 145px;
+	display: grid;
+	grid-template-rows: 2fr 1fr 1fr 2fr;
+	align-items: center;
+	justify-items: center;
+}
+#form_add_tree, #form_edit_tree {
+	display: grid;
+	padding: 0;
+	justify-items: center;
+	align-items: center;
+	height: 540px;
+}
+#tabs-1, #tabs-2 {
+	height: 560px;
+	padding: 5px 15px;
+}
+#form_add_tree p, #form_edit_tree p {
+	margin: 0;
+}
+.pad-left {
+	padding-left: 20px;
+}
+.marg_left, #textarea {
+	margin-left: 8px;
+}
+input:focus, textarea:focus {
+	border: 2px solid rgba(73, 183, 256, 1) !important;
+	box-shadow: 0 0 7px rgba(73, 183, 256, 1) !important;
+	-moz-box-shadow: 0 0 7px rgba(73, 183, 256, 1) !important;
+	-webkit-box-shadow: 0 0 7px rgba(73, 183, 256, 1) !important;
+}
+input:focus, textarea:focus, select:focus {
+	outline-offset: 0px !important;
+	outline: none !important;
+}
+input[type='number'] {
+	padding-left: 3px;
+}
+/* info window styles */
+div.gm-style-iw h3 {
+	color: #0000b4;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+div.gm-style-iw {
+	margin: 10px 15px;
+}
+/* data editor layout */
+.wrapper > div:nth-child(odd) {
+	background-color: #efffff;
+}
+.wrapper > div {
+	padding: 10px;
+	background: #e6f8FC;
+}
+.wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 1em;
+	grid-auto-rows: minmax(100px, auto);
+	margin-bottom: 20px;
+}
+.btn_row {
+	display: grid;
+	grid-template-columns: 1fr;
+	justify-items: center;
+}
+.edit_btn_row {
+	margin-top: 8px;
+	justify-self: center;
+}
+button.edit_btn {
+	width: 170px;
+}
+.crud_zone {
+	border-radius: 5px;
+	border: solid 1px #ccc;
+	color: #000084;
+}
+.status_message {
+	height: 30px;
+	width: 170px;
+}
+.search_id_btn {
+	margin-bottom: 6px;
+	margin-top: 4px;
+}
+.margin_b {
+	margin-bottom: 6px;
+}
+.status_message {
+	width: 240px;
+	text-align: center;
+}
+.red {
+	color: red;
+	background-color: white;
+}
+.green {
+	color: #0000ff;
+	background-color: white;
+}
+#return_to_map {
+	margin-top: 100px;
+}
